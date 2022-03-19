@@ -1,0 +1,136 @@
+﻿<Window x:Class="WordCounter.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WordCounter"
+        mc:Ignorable="d"
+        Title="WordCounter"
+        ResizeMode="CanMinimize"
+        Height="750" Width="600">
+    <Window.Resources>
+        <Style x:Key="FocusVisual">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Rectangle Margin="2" StrokeDashArray="1 2" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" SnapsToDevicePixels="true" StrokeThickness="1"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <SolidColorBrush x:Key="Button.Static.Background" Color="{StaticResource Colors.Gray.03}"/>
+        <SolidColorBrush x:Key="Button.Static.Border" Color="{StaticResource Colors.Light}"/>
+        <SolidColorBrush x:Key="Button.Static.Foreground" Color="{StaticResource Colors.Light}"/>
+        <SolidColorBrush x:Key="Button.MouseOver.Background" Color="{StaticResource Colors.Gray.02}"/>
+        <SolidColorBrush x:Key="Button.MouseOver.Border" Color="{StaticResource Colors.White}"/>
+        <SolidColorBrush x:Key="Button.Pressed.Background" Color="{StaticResource Colors.Gray.04}"/>
+        <SolidColorBrush x:Key="Button.Pressed.Border" Color="{StaticResource Colors.Light}"/>
+        <Style x:Key="ButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
+            <Setter Property="Background" Value="{StaticResource Button.Static.Background}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Button.Static.Border}"/>
+            <Setter Property="Foreground" Value="{StaticResource Button.Static.Foreground}"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="1"/>
+            <Setter Property="Content" Value="Load File"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="true">
+                            <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsDefaulted" Value="true">
+                                <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource Button.MouseOver.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.MouseOver.Border}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="true">
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Pressed.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Pressed.Border}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <DockPanel>
+
+        <Border Height="100" DockPanel.Dock="Top"
+                Background="{StaticResource SolidColors.Gray.04}">
+            <Grid>
+                <Button x:Name="LoadFileButton" Style="{DynamicResource ButtonStyle}" Height="45" Width="340" Click="LoadFileButton_Click"/>
+            </Grid>
+
+        </Border>
+
+        <Border Width="600" DockPanel.Dock="Bottom"
+                Background="{StaticResource SolidColors.Gray.04}">
+            <Grid>
+
+                <Border Height="80" VerticalAlignment="Top" Margin="10,10,30,10"
+                        Background="{StaticResource SolidColors.Gray.04}"
+                        BorderThickness="1"
+                        BorderBrush="{StaticResource SolidColors.Light}"
+                        CornerRadius="5">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <Border Grid.Column="0" BorderThickness="0,0,1,0"
+                                BorderBrush="{StaticResource SolidColors.Light}">
+                            <Label VerticalAlignment="Center"
+                                   HorizontalAlignment="Center"
+                                   FontSize="18" Foreground="{StaticResource SolidColors.Light}"
+                                   FontFamily="Source Sans Pro">ID</Label>
+                        </Border>
+
+                        <Border Grid.Column="1">
+                            <Label VerticalAlignment="Center"
+                                   HorizontalAlignment="Center"
+                                   FontSize="18" Foreground="{StaticResource SolidColors.Light}"
+                                   FontFamily="Source Sans Pro">WORD</Label>
+                        </Border>
+
+                        <Border Grid.Column="2" BorderThickness="1,0,0,0"
+                                BorderBrush="{StaticResource SolidColors.Light}" Grid.ColumnSpan="2">
+                            <Label VerticalAlignment="Center"
+                                   HorizontalAlignment="Center"
+                                   FontSize="18" Foreground="{StaticResource SolidColors.Light}"
+                                   FontFamily="Source Sans Pro">QUANTITY</Label>
+                        </Border>
+
+                    </Grid>
+                </Border>
+
+
+                <FlowDocumentReader Margin="0,120,20,0" ViewingMode="Scroll" MinZoom="100" MaxZoom="100"
+                                    IsPageViewEnabled="False"
+                                    IsTwoPageViewEnabled="False"
+                                    Background="{StaticResource SolidColors.Light}">
+                    <FlowDocument IsColumnWidthFlexible="False">
+                        <Table CellSpacing="0">
+                            <Table.Columns>
+                                <TableColumn/>
+                                <TableColumn/>
+                                <TableColumn/>
+                            </Table.Columns>
+
+                            <TableRowGroup x:Name="TableRowGroup"/>
+                        </Table>
+                    </FlowDocument>
+                </FlowDocumentReader>
+            </Grid>
+        </Border>
+
+    </DockPanel>
+</Window>
